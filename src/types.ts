@@ -34,7 +34,6 @@ export interface Stats {
 }
 
 export interface SearchParams {
-  queueName: string | undefined;
   functionName: string | undefined;
   startTime: string | undefined;
   finishTime: string | undefined;
@@ -50,5 +49,3 @@ export interface ItemName {
 export type FunctionName = ItemName;
 
 export type QueueName = ItemName;
-
-export type SettingName = ItemName;

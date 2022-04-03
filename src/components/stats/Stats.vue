@@ -1,4 +1,6 @@
 <template>
+  <h2 class="is-size-2 mb-4">{{ state.queue }}</h2>
+
   <div class="columns">
     <div class="column">
       <article class="message">
@@ -56,6 +58,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
 
+import { useGlobalState } from "@/store";
 import { Stats } from "@/types";
 
 export default defineComponent({
@@ -65,6 +68,11 @@ export default defineComponent({
       type: Object as PropType<Stats>,
       required: true,
     },
+  },
+  setup() {
+    const state = useGlobalState();
+
+    return { state };
   },
 });
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <Setting :settingNames="getSettingNamesTask.last?.value || []"></Setting>
+  <Setting :queueNames="getQueueNamesTask.last?.value || []"></Setting>
 </template>
 
 <script lang="ts">
@@ -8,7 +8,7 @@ import { useAsyncTask } from "vue-concurrency";
 
 import { API } from "@/api";
 import Setting from "@/components/setting/Setting.vue";
-import { SettingName } from "@/types";
+import { QueueName } from "@/types";
 
 export default defineComponent({
   name: "SettingWrapper",
@@ -16,16 +16,16 @@ export default defineComponent({
     Setting,
   },
   setup() {
-    const getSettingNamesTask = useAsyncTask<SettingName[], []>(async () => {
-      return await API.getSettingNames();
+    const getQueueNamesTask = useAsyncTask<QueueName[], []>(async () => {
+      return await API.getQueueNames();
     });
 
     onMounted(async () => {
-      await getSettingNamesTask.perform();
+      await getQueueNamesTask.perform();
     });
 
     return {
-      getSettingNamesTask,
+      getQueueNamesTask,
     };
   },
 });
