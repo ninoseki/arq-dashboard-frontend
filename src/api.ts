@@ -7,7 +7,6 @@ import {
   JobsWithPagination,
   QueueName,
   SearchParams,
-  SettingName,
   Stats,
 } from "@/types";
 
@@ -16,7 +15,7 @@ const state = useGlobalState();
 let client = axios.create({
   headers: {
     accept: "application/json",
-    "arq-dashboard-setting": state.value.setting,
+    "arq-queue-name": state.value.queue,
   },
 });
 
@@ -24,7 +23,7 @@ export function updateClient(): void {
   client = axios.create({
     headers: {
       accept: "application/json",
-      "arq-dashboard-setting": state.value.setting,
+      "arq-queue-name": state.value.queue,
     },
   });
 }
@@ -54,11 +53,6 @@ export const API = {
 
   async getQueueNames(): Promise<QueueName[]> {
     const res = await client.get<QueueName[]>("/api/queues/");
-    return res.data;
-  },
-
-  async getSettingNames(): Promise<SettingName[]> {
-    const res = await client.get<SettingName[]>("/api/settings/");
     return res.data;
   },
 };

@@ -3,27 +3,19 @@
     <div class="column">
       <div class="field is-horizontal">
         <div class="field-label is-normal">
-          <label class="label">Success</label>
+          <label class="label">Function</label>
         </div>
         <div class="field-body">
           <div class="field">
             <div class="control">
-              <label class="radio">
-                <input type="radio" v-model="success" v-bind:value="true" />
-                True
-              </label>
-              <label class="radio">
-                <input type="radio" v-model="success" v-bind:value="false" />
-                False
-              </label>
-              <label class="radio">
-                <input
-                  type="radio"
-                  v-model="success"
-                  v-bind:value="undefined"
-                />
-                Both
-              </label>
+              <div class="select">
+                <select v-model="functionName">
+                  <option></option>
+                  <option v-for="f in functionNames" :key="f.name">
+                    {{ f.name }}
+                  </option>
+                </select>
+              </div>
             </div>
           </div>
         </div>
@@ -42,51 +34,6 @@
                   <option></option>
                   <option v-for="status_ in statuses" :key="status_">
                     {{ status_ }}
-                  </option>
-                </select>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="columns">
-    <div class="column">
-      <div class="field is-horizontal">
-        <div class="field-label is-normal">
-          <label class="label">Queue</label>
-        </div>
-        <div class="field-body">
-          <div class="field">
-            <div class="control">
-              <div class="select">
-                <select v-model="queueName">
-                  <option></option>
-                  <option v-for="q in queueNames" :key="q.name">
-                    {{ q.name }}
-                  </option>
-                </select>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="column">
-      <div class="field is-horizontal">
-        <div class="field-label is-normal">
-          <label class="label">Function</label>
-        </div>
-        <div class="field-body">
-          <div class="field">
-            <div class="control">
-              <div class="select">
-                <select v-model="functionName">
-                  <option></option>
-                  <option v-for="f in functionNames" :key="f.name">
-                    {{ f.name }}
                   </option>
                 </select>
               </div>
@@ -127,6 +74,39 @@
       </div>
     </div>
   </div>
+
+  <div class="columns">
+    <div class="column">
+      <div class="field is-horizontal">
+        <div class="field-label is-normal">
+          <label class="label">Success</label>
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control">
+              <label class="radio">
+                <input type="radio" v-model="success" v-bind:value="true" />
+                True
+              </label>
+              <label class="radio">
+                <input type="radio" v-model="success" v-bind:value="false" />
+                False
+              </label>
+              <label class="radio">
+                <input
+                  type="radio"
+                  v-model="success"
+                  v-bind:value="undefined"
+                />
+                Both
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="column"></div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -159,11 +139,13 @@ export default defineComponent({
   },
   setup(props) {
     const success = ref<boolean | undefined>(undefined);
-    const queueName = ref<string | undefined>(undefined);
     const startTime = ref<string | undefined>(undefined);
     const finishTime = ref<string | undefined>(undefined);
     const functionName = ref<string | undefined>(undefined);
     const status = ref<string | undefined>(undefined);
+
+    const functionQuery = useRouteQuery("function");
+    const statusQuery = useRouteQuery("status");
 
     const statuses = [
       "deferred",
@@ -187,7 +169,6 @@ export default defineComponent({
         page: props.page,
         success: success.value,
         status: normalizeQueryValue(status.value),
-        queueName: normalizeQueryValue(queueName.value),
         startTime: normalizeQueryValue(startTime.value),
         finishTime: normalizeQueryValue(finishTime.value),
         functionName: normalizeQueryValue(functionName.value),
@@ -196,14 +177,6 @@ export default defineComponent({
     };
 
     const updateParamsViaQueries = () => {
-      const queueQuery = useRouteQuery("queue");
-      const functionQuery = useRouteQuery("function");
-      const statusQuery = useRouteQuery("status");
-
-      if (queueQuery.value) {
-        queueName.value = queueQuery.value.toString();
-      }
-
       if (functionQuery.value) {
         functionName.value = functionQuery.value.toString();
       }
@@ -221,7 +194,6 @@ export default defineComponent({
       getSearchParams,
       success,
       status,
-      queueName,
       startTime,
       finishTime,
       functionName,

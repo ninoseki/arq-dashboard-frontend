@@ -2,12 +2,12 @@
   <div>
     <div class="box">
       <div class="field">
-        <label class="label">ARQ Dashboard setting</label>
+        <label class="label">ARQ queue name</label>
         <div class="control">
           <div class="select">
-            <select v-model="setting" @change="updateSetting">
-              <option v-for="s in settingNames" :key="s.name">
-                {{ s.name }}
+            <select v-model="queue" @change="updateSetting">
+              <option v-for="q in queueNames" :key="q.name">
+                {{ q.name }}
               </option>
             </select>
           </div>
@@ -22,27 +22,27 @@ import { defineComponent, PropType, ref } from "vue";
 
 import { updateClient } from "@/api";
 import { useGlobalState } from "@/store";
-import { SettingName } from "@/types";
+import { QueueName } from "@/types";
 
 export default defineComponent({
   name: "SettingItem",
   props: {
-    settingNames: {
-      type: Array as PropType<SettingName[]>,
+    queueNames: {
+      type: Array as PropType<QueueName[]>,
       required: true,
     },
   },
   setup() {
     const state = useGlobalState();
 
-    const setting = ref(state.value.setting);
+    const queue = ref(state.value.queue);
 
     const updateSetting = () => {
-      state.value.setting = setting.value;
+      state.value.queue = queue.value;
       updateClient();
     };
 
-    return { setting, updateSetting };
+    return { queue, updateSetting };
   },
 });
 </script>
