@@ -20,7 +20,7 @@ import { API } from "@/api";
 import ErrorMessage from "@/components/ErrorMessage.vue";
 import JobComponent from "@/components/job/Job.vue";
 import Loading from "@/components/Loading.vue";
-import { Job } from "@/types";
+import { CachedJob } from "@/types";
 
 export default defineComponent({
   name: "JobWrapper",
@@ -36,9 +36,11 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const getJobTask = useAsyncTask<Job, [string]>(async (_signal, jobId) => {
-      return await API.getJob(jobId);
-    });
+    const getJobTask = useAsyncTask<CachedJob, [string]>(
+      async (_signal, jobId) => {
+        return await API.getJob(jobId);
+      }
+    );
 
     onMounted(async () => {
       await getJobTask.perform(props.jobId);

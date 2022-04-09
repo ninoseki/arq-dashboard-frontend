@@ -1,11 +1,9 @@
 <template>
   <Loading v-if="getStatsTask.isRunning"></Loading>
 
-  <StatsComponent
-    :stats="getStatsTask.last.value"
-    v-if="getStatsTask.last?.value"
-  ></StatsComponent>
-  <div v-if="updatedAt">
+  <div v-if="getStatsTask.last?.value">
+    <StatsComponent :stats="getStatsTask.last.value"></StatsComponent>
+
     <div class="columns">
       <div class="column">
         <div class="field is-grouped is-grouped-centered">
@@ -18,11 +16,7 @@
             </a>
           </p>
         </div>
-        <p>
-          Updated at: {{ getLocalDatetime(updatedAt) }} ({{
-            getHumanizedRelativeTime(updatedAt)
-          }})
-        </p>
+        <CachedAt :cachedAt="getStatsTask.last.value.cachedAt"></CachedAt>
       </div>
     </div>
   </div>
@@ -34,10 +28,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from "vue";
+import { defineComponent, onMounted } from "vue";
 import { useAsyncTask } from "vue-concurrency";
 
 import { API } from "@/api";
+import CachedAt from "@/components/CachedAt.vue";
 import ErrorMessage from "@/components/ErrorMessage.vue";
 import Loading from "@/components/Loading.vue";
 import StatsComponent from "@/components/stats/Stats.vue";
@@ -50,17 +45,15 @@ export default defineComponent({
     Loading,
     ErrorMessage,
     StatsComponent,
+    CachedAt,
   },
   setup() {
     const getStatsTask = useAsyncTask<Stats, []>(async () => {
       return await API.getStats();
     });
 
-    const updatedAt = ref<string | undefined>(undefined);
-
     const update = async () => {
       await getStatsTask.perform();
-      updatedAt.value = new Date().toISOString();
     };
 
     onMounted(async () => {
@@ -69,7 +62,6 @@ export default defineComponent({
 
     return {
       getStatsTask,
-      updatedAt,
       update,
       getHumanizedRelativeTime,
       getLocalDatetime,

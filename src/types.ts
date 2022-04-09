@@ -3,6 +3,7 @@ export interface JobsWithPagination {
   total: number;
   currentPage: number;
   pageSize: number;
+  cachedAt: string;
 }
 
 export interface Job {
@@ -21,6 +22,10 @@ export interface Job {
   status: string;
 }
 
+export interface CachedJob extends Job {
+  cachedAt: string;
+}
+
 export interface Stats {
   name: string;
   address: string;
@@ -31,6 +36,7 @@ export interface Stats {
   deferredJobs: number;
   completeJobs: number;
   notFoundJobs: number;
+  cachedAt: string;
 }
 
 export interface SearchParams {
