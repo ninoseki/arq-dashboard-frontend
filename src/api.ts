@@ -2,8 +2,8 @@ import axios from "axios";
 
 import { useGlobalState } from "@/store";
 import {
+  CachedJob,
   FunctionName,
-  Job,
   JobsWithPagination,
   QueueName,
   SearchParams,
@@ -34,8 +34,8 @@ export const API = {
     return res.data;
   },
 
-  async getJob(id: string): Promise<Job> {
-    const res = await client.get<Job>(`/api/jobs/${id}`);
+  async getJob(id: string): Promise<CachedJob> {
+    const res = await client.get<CachedJob>(`/api/jobs/${id}`);
     return res.data;
   },
 

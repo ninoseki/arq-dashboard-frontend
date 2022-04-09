@@ -65,17 +65,20 @@
       @update-page="updatePage"
     ></Pagination>
     <p>({{ jobs.total }} jobs in total)</p>
+    <CachedAt :cachedAt="jobs.cachedAt"></CachedAt>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
 
+import CachedAt from "@/components/CachedAt.vue";
 import Status from "@/components/job/Status.vue";
 import Success from "@/components/job/Success.vue";
 import Pagination from "@/components/Pagination.vue";
 import ReadableDatetime from "@/components/ReadableDatetime.vue";
 import { JobsWithPagination } from "@/types";
+import { getHumanizedRelativeTime, getLocalDatetime } from "@/utils";
 
 export default defineComponent({
   name: "JobsItem",
@@ -84,6 +87,7 @@ export default defineComponent({
     ReadableDatetime,
     Status,
     Success,
+    CachedAt,
   },
   props: {
     jobs: {
@@ -101,7 +105,12 @@ export default defineComponent({
       context.emit("refresh-page");
     };
 
-    return { updatePage, refreshPage };
+    return {
+      updatePage,
+      refreshPage,
+      getHumanizedRelativeTime,
+      getLocalDatetime,
+    };
   },
 });
 </script>
