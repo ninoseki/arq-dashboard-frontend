@@ -1,6 +1,6 @@
 <template>
   <div class="box mb-6">
-    <Form ref="form" :page="page"></Form>
+    <JobForm ref="form" :page="page"></JobForm>
 
     <hr />
 
@@ -45,7 +45,7 @@ import { useAsyncTask } from "vue-concurrency";
 
 import { API } from "@/api";
 import ErrorMessage from "@/components/ErrorMessage.vue";
-import Form from "@/components/job/FormWrapper.vue";
+import JobForm from "@/components/job/FormWrapper.vue";
 import Jobs from "@/components/job/Jobs.vue";
 import Loading from "@/components/Loading.vue";
 import { JobsWithPagination, SearchParams } from "@/types";
@@ -55,12 +55,12 @@ export default defineComponent({
   components: {
     Loading,
     ErrorMessage,
-    Form,
+    JobForm,
     Jobs,
   },
   setup() {
     const page = ref(1);
-    const form = ref<InstanceType<typeof Form>>();
+    const form = ref<InstanceType<typeof JobForm>>();
 
     const getJobsTask = useAsyncTask<JobsWithPagination, [SearchParams]>(
       async (_signal, params) => {

@@ -110,11 +110,11 @@
 </template>
 
 <script lang="ts">
-import "vue3-date-time-picker/dist/main.css";
+import "@vuepic/vue-datepicker/dist/main.css";
 
+import Datepicker from "@vuepic/vue-datepicker";
 import { useRouteQuery } from "@vueuse/router";
 import { defineComponent, onMounted, PropType, ref } from "vue";
-import Datepicker from "vue3-date-time-picker";
 
 import { FunctionName, QueueName, SearchParams } from "@/types";
 
