@@ -1,10 +1,10 @@
 <template>
-  <Form
+  <JobForm
     ref="form"
     :page="page"
     :functionNames="getFunctionNamesTask.last?.value || []"
     :queueNames="getQueueNamesTask.last?.value || []"
-  ></Form>
+  ></JobForm>
 </template>
 
 <script lang="ts">
@@ -12,13 +12,13 @@ import { defineComponent, onMounted, ref } from "vue";
 import { useAsyncTask } from "vue-concurrency";
 
 import { API } from "@/api";
-import Form from "@/components/job/Form.vue";
+import JobForm from "@/components/job/Form.vue";
 import { FunctionName, QueueName, SearchParams } from "@/types";
 
 export default defineComponent({
   name: "FormWrapper",
   components: {
-    Form,
+    JobForm,
   },
   props: {
     page: {
@@ -27,7 +27,7 @@ export default defineComponent({
     },
   },
   setup() {
-    const form = ref<InstanceType<typeof Form>>();
+    const form = ref<InstanceType<typeof JobForm>>();
 
     const getSearchParams = () => {
       return form.value?.getSearchParams() as SearchParams;
